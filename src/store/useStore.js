@@ -3,8 +3,18 @@ import { create } from 'zustand';
 const useStore = create((set) => ({
   theme: 'dark',
   toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
-  totalRevenue: 12500,
-  activeOrders: 14,
+  
+  searchQuery: '',
+  setSearchQuery: (query) => set({ searchQuery: query }),
+
+  notifications: [
+    { id: 'notif-initial', message: 'Welcome to SmartClean AI POS!', isNew: true, time: new Date().toISOString() }
+  ],
+  markNotificationsRead: () => set((state) => ({
+    notifications: state.notifications.map(n => ({ ...n, isNew: false }))
+  })),
+  clearNotifications: () => set({ notifications: [] }),
+
   orders: [
     {
       id: 'ORD-001',
@@ -31,16 +41,32 @@ const useStore = create((set) => ({
       date: new Date().toISOString()
     }
   ],
-  addOrder: (order) => set((state) => ({
-    orders: [order, ...state.orders],
-    activeOrders: state.activeOrders + 1,
-    totalRevenue: state.totalRevenue + order.total
-  })),
-  updateOrderStatus: (id, newStatus) => set((state) => ({
-    orders: state.orders.map(order => 
-      order.id === id ? { ...order, status: newStatus } : order
-    )
-  }))
+  addOrder: (order) => set((state) => {
+    const newNotif = {
+      id: `notif-${Date.now()}`,
+      message: `New order ${order.id} received for ${order.customer}.`,
+      isNew: true,
+      time: new Date().toISOString()
+    };
+    return {
+      orders: [order, ...state.orders],
+      notifications: [newNotif, ...state.notifications]
+    };
+  }),
+  updateOrderStatus: (id, newStatus) => set((state) => {
+    const newNotif = {
+      id: `notif-${Date.now()}`,
+      message: `Order ${id} moved to ${newStatus}.`,
+      isNew: true,
+      time: new Date().toISOString()
+    };
+    return {
+      orders: state.orders.map(order => 
+        order.id === id ? { ...order, status: newStatus } : order
+      ),
+      notifications: [newNotif, ...state.notifications]
+    };
+  })
 }));
 
 export default useStore;

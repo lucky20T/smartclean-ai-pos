@@ -16,7 +16,7 @@ import OrderCard from '../components/OrderCard';
 const COLUMNS = ['Received', 'Washing', 'Drying', 'Ready', 'Delivered'];
 
 const Orders = () => {
-  const { orders, updateOrderStatus } = useStore();
+  const { orders, updateOrderStatus, searchQuery } = useStore();
   const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
@@ -59,8 +59,16 @@ const Orders = () => {
     }
   };
 
+  // Filter orders based on search query
+  const filteredOrders = orders.filter(order => {
+    const query = (searchQuery || '').toLowerCase();
+    return order.customer.toLowerCase().includes(query) || 
+           order.id.toLowerCase().includes(query) ||
+           order.items.some(item => item.name.toLowerCase().includes(query));
+  });
+
   const ordersByStatus = COLUMNS.reduce((acc, status) => {
-    acc[status] = orders.filter(order => order.status === status);
+    acc[status] = filteredOrders.filter(order => order.status === status);
     acc[status].sort((a, b) => new Date(b.date) - new Date(a.date));
     return acc;
   }, {});
