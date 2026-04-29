@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wand2, Bot, CheckCircle, ArrowRight, AlertCircle } from 'lucide-react';
+import { Wand2, Bot, CheckCircle, ArrowRight, AlertCircle, Sparkles } from 'lucide-react';
 import useStore from '../store/useStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,18 +39,15 @@ const NewOrder = () => {
         const cleanSegment = segment.trim();
         if (!cleanSegment) return;
 
-        // Match optional leading numbers and the rest of the string
         const match = cleanSegment.match(/^(\d+)?\s*(.+)$/);
         if (!match) return;
 
         const quantity = match[1] ? parseInt(match[1], 10) : 1;
         const rawName = match[2].trim();
         
-        let price = 25; // Default generic price for unknown clothes
-        // Capitalize each word for custom items so it always looks clean
+        let price = 25;
         let finalName = rawName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-        // Apply specific pricing logic for common categories, but KEEP the user's custom name
         if (rawName.includes('shirt') || rawName.includes('top') || rawName.includes('blouse') || rawName.includes('tshirt')) {
           price = 20;
         } else if (rawName.includes('jean') || rawName.includes('pant') || rawName.includes('trouser')) {
@@ -67,11 +64,7 @@ const NewOrder = () => {
           price = 15;
         }
 
-        items.push({ 
-          name: finalName, 
-          quantity, 
-          price
-        });
+        items.push({ name: finalName, quantity, price });
         total += (quantity * price);
       });
       
@@ -103,75 +96,82 @@ const NewOrder = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-white tracking-tight flex items-center justify-center gap-3">
-          <Wand2 className="w-8 h-8 text-blue-400" />
+    <div className="max-w-3xl mx-auto py-10 px-2 relative">
+      <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none -z-10" />
+      
+      <div className="mb-12 text-center">
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 tracking-tight flex items-center justify-center gap-3">
+          <Sparkles className="w-8 h-8 text-blue-400" />
           AI Order Entry
         </h1>
-        <p className="text-gray-400 mt-3 max-w-xl mx-auto">
+        <p className="text-zinc-400 mt-4 max-w-xl mx-auto text-lg">
           Simply type what the customer brought in. Our AI will automatically categorize items and calculate prices.
         </p>
       </div>
 
-      <div className="bg-gray-800 rounded-2xl p-6 md:p-8 border border-gray-700 shadow-xl">
-        <div className="space-y-6">
+      <div className="bg-zinc-900/60 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-zinc-800/80 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
+        
+        <div className="space-y-8">
           <AnimatePresence>
             {error && (
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm flex items-center gap-2"
+                className="bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-4 rounded-xl text-sm flex items-center gap-3 shadow-inner"
               >
-                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
                 {error}
               </motion.div>
             )}
           </AnimatePresence>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Customer Name</label>
-            <input
-              type="text"
-              value={customer}
-              onChange={(e) => {
-                setCustomer(e.target.value);
-                if (error) setError('');
-              }}
-              placeholder="e.g. John Doe"
-              className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            />
-          </div>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-sm font-semibold text-zinc-300 mb-2 uppercase tracking-wider">Customer Name</label>
+              <input
+                type="text"
+                value={customer}
+                onChange={(e) => {
+                  setCustomer(e.target.value);
+                  if (error) setError('');
+                }}
+                placeholder="e.g. John Doe"
+                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-5 py-4 text-white placeholder-zinc-600 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all shadow-inner text-lg"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Items Description</label>
-            <textarea
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                if (error) setError('');
-              }}
-              placeholder="e.g. 2 shirts, 1 jacket, 3 jeans"
-              rows={4}
-              className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
-            />
+            <div>
+              <label className="block text-sm font-semibold text-zinc-300 mb-2 uppercase tracking-wider">Items Description</label>
+              <textarea
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  if (error) setError('');
+                }}
+                placeholder="e.g. 2 shirts, 1 jacket, 3 jeans"
+                rows={4}
+                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl px-5 py-4 text-white placeholder-zinc-600 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 outline-none transition-all resize-none shadow-inner text-lg"
+              />
+            </div>
           </div>
 
           <button
             onClick={handleProcess}
             disabled={isProcessing}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full relative group overflow-hidden bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-3 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border border-zinc-700 hover:border-zinc-600 shadow-lg"
           >
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
             {isProcessing ? (
               <>
-                <Bot className="w-5 h-5 animate-pulse" />
-                AI is Analyzing...
+                <Bot className="w-6 h-6 animate-pulse text-blue-400" />
+                <span className="text-blue-400">AI is Analyzing...</span>
               </>
             ) : (
               <>
-                <Wand2 className="w-5 h-5" />
-                Process Order
+                <Wand2 className="w-6 h-6 text-blue-400 group-hover:rotate-12 transition-transform" />
+                Process Order with AI
               </>
             )}
           </button>
@@ -185,39 +185,41 @@ const NewOrder = () => {
               exit={{ opacity: 0, height: 0, marginTop: 0 }}
               className="overflow-hidden"
             >
-              <div className="bg-gray-900/50 rounded-xl p-6 border border-gray-700/50">
-                <div className="flex items-center gap-2 text-emerald-400 mb-4 font-medium">
-                  <CheckCircle className="w-5 h-5" />
+              <div className="bg-zinc-950/80 rounded-2xl p-6 border border-zinc-800 shadow-inner relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+                
+                <div className="flex items-center gap-2 text-emerald-400 mb-6 font-semibold text-lg">
+                  <CheckCircle className="w-6 h-6" />
                   Successfully Parsed Order
                 </div>
                 
-                <div className="space-y-3 mb-6">
+                <div className="space-y-3 mb-8">
                   {parsedResult.items.map((item, idx) => (
-                    <div key={idx} className="flex justify-between items-center text-gray-300 text-sm bg-gray-800/50 p-3 rounded-lg border border-gray-700/50">
-                      <span className="flex items-center gap-3">
-                        <span className="w-7 h-7 rounded-full bg-gray-800 flex items-center justify-center text-xs font-bold text-white border border-gray-600">
+                    <div key={idx} className="flex justify-between items-center text-zinc-300 bg-zinc-900/80 p-4 rounded-xl border border-zinc-800/80 hover:border-zinc-700 transition-colors">
+                      <span className="flex items-center gap-4">
+                        <span className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-sm font-bold text-white border border-zinc-700 shadow-sm">
                           &times;{item.quantity}
                         </span>
-                        <span className="font-medium text-gray-200">{item.name}</span>
+                        <span className="font-medium text-white text-lg">{item.name}</span>
                       </span>
-                      <span className="text-gray-400 font-medium">
-                        ₹{item.price} <span className="text-gray-500 text-xs font-normal">each</span>
+                      <span className="text-zinc-400 font-medium text-lg">
+                        ₹{item.price} <span className="text-zinc-600 text-sm font-normal">each</span>
                       </span>
                     </div>
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between border-t border-gray-700 pt-4 mb-6">
-                  <span className="text-gray-400 font-medium">Total Amount</span>
-                  <span className="text-2xl font-bold text-emerald-400">₹{parsedResult.total}</span>
+                <div className="flex items-center justify-between border-t border-zinc-800 pt-6 mb-8">
+                  <span className="text-zinc-400 font-semibold uppercase tracking-wider">Total Amount</span>
+                  <span className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">₹{parsedResult.total}</span>
                 </div>
 
                 <button
                   onClick={handleConfirm}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-zinc-950 font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_25px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5"
                 >
                   Confirm & Create Order
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-6 h-6" />
                 </button>
               </div>
             </motion.div>

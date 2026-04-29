@@ -22,7 +22,7 @@ const Orders = () => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 5, // minimum distance before drag starts (helps click events pass through)
+        distance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -46,7 +46,6 @@ const Orders = () => {
     const activeOrder = orders.find(o => o.id === activeOrderId);
     if (!activeOrder) return;
 
-    // Check if dropping onto a column itself (when empty or dropping in empty space)
     if (COLUMNS.includes(overId)) {
       if (activeOrder.status !== overId) {
         updateOrderStatus(activeOrderId, overId);
@@ -54,14 +53,12 @@ const Orders = () => {
       return;
     }
 
-    // Check if dropping over another card
     const overOrder = orders.find(o => o.id === overId);
     if (overOrder && overOrder.status !== activeOrder.status) {
       updateOrderStatus(activeOrderId, overOrder.status);
     }
   };
 
-  // Organize orders into their respective columns
   const ordersByStatus = COLUMNS.reduce((acc, status) => {
     acc[status] = orders.filter(order => order.status === status);
     acc[status].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -71,20 +68,24 @@ const Orders = () => {
   const activeOrder = activeId ? orders.find(o => o.id === activeId) : null;
 
   return (
-    <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8 h-[calc(100vh-4rem)] flex flex-col">
-      <div className="mb-6 flex-shrink-0">
-        <h1 className="text-3xl font-bold text-white tracking-tight">Kanban Board</h1>
-        <p className="text-gray-400 mt-2">Drag and drop orders across columns to update their status.</p>
+    <div className="max-w-[1800px] mx-auto px-2 py-4 h-full flex flex-col relative">
+      <div className="absolute top-[10%] right-[10%] w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none -z-10" />
+      
+      <div className="mb-8 flex-shrink-0">
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 tracking-tight">
+          Kanban Board
+        </h1>
+        <p className="text-zinc-400 mt-2 text-lg">Drag and drop orders across columns to update their status.</p>
       </div>
 
-      <div className="flex-1 overflow-x-auto overflow-y-hidden pb-4 custom-scrollbar">
+      <div className="flex-1 overflow-x-auto overflow-y-hidden pb-6 custom-scrollbar">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCorners}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex gap-3 md:gap-4 lg:gap-6 h-full items-stretch w-full px-1">
+          <div className="flex gap-4 md:gap-6 h-full items-stretch w-full px-1">
             {COLUMNS.map(status => (
               <KanbanColumn 
                 key={status}
@@ -95,7 +96,6 @@ const Orders = () => {
             ))}
           </div>
 
-          {/* This overlay renders the card being dragged so it visually detaches from the list */}
           <DragOverlay dropAnimation={{ duration: 250, easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)' }}>
             {activeOrder ? <OrderCard order={activeOrder} /> : null}
           </DragOverlay>

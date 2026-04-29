@@ -4,11 +4,18 @@
 
 SmartClean AI is a modern, high-fidelity dark-themed SaaS Laundry Point of Sale (POS) system built with React, Vite, and TailwindCSS. It features dynamic state management via Zustand, beautiful UI animations using Framer Motion, and a robust drag-and-drop Kanban workflow powered by `@dnd-kit`.
 
+## Recent UI/UX Updates
+
+- **Premium Dark Theme**: Implemented a rich Zinc/Blue color palette with glassmorphism, background blurs, and neon accents.
+- **Enhanced Layout**: Transitioned to a robust Sidebar and TopBar layout, providing a better scalable SaaS structure.
+- **Redesigned Dashboard**: Modernized statistics cards with hover animations, gradients, and micro-interactions.
+- **Interactive Kanban**: Revamped the drag-and-drop Orders view with glowing column headers, subtle card boundaries, and detailed order items.
+
 ## Implementation Summaries
 
 ### 1. Dashboard & Core Layout
 - **Global State**: Implemented a `zustand` store with mock order data, tracking total revenue and active orders.
-- **Routing**: Setup `react-router-dom` with a persistent top navigation bar.
+- **Routing**: Setup `react-router-dom` with a persistent sidebar and topbar navigation.
 - **Dashboard**: Created animated metric cards using `framer-motion` and a list of recent orders.
 - **UI System**: Established a dark theme SaaS aesthetic using Tailwind CSS and `lucide-react` icons.
 

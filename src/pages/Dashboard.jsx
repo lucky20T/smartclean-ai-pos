@@ -8,13 +8,18 @@ const Dashboard = () => {
   const recentOrders = orders.slice(0, 4);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white tracking-tight">Dashboard Overview</h1>
-        <p className="text-gray-400 mt-2">Monitor your laundry business at a glance.</p>
+    <div className="max-w-7xl mx-auto py-8 px-2 relative">
+      {/* Subtle background element */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+
+      <div className="mb-10">
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 tracking-tight">
+          Dashboard Overview
+        </h1>
+        <p className="text-zinc-400 mt-2 text-lg">Monitor your laundry business at a glance.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         <StatCard 
           title="Total Revenue" 
           value={`$${totalRevenue.toLocaleString()}`} 
@@ -37,7 +42,7 @@ const Dashboard = () => {
 
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-white">Recent Orders</h2>
+          <h2 className="text-2xl font-bold text-white tracking-tight">Recent Orders</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {recentOrders.map(order => (
