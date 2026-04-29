@@ -1,5 +1,7 @@
 # SmartClean AI POS
 
+**Live Demo:** [https://smartclean-ai-pos.vercel.app/](https://smartclean-ai-pos.vercel.app/)
+
 SmartClean AI is a modern, high-fidelity dark-themed SaaS Laundry Point of Sale (POS) system built with React, Vite, and TailwindCSS. It features dynamic state management via Zustand, beautiful UI animations using Framer Motion, and a robust drag-and-drop Kanban workflow powered by `@dnd-kit`.
 
 ## Implementation Summaries
