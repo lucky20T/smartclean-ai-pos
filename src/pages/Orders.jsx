@@ -72,10 +72,10 @@ const Orders = () => {
       <div className="absolute top-[10%] right-[10%] w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] pointer-events-none -z-10" />
       
       <div className="mb-8 flex-shrink-0">
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 tracking-tight">
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-400 tracking-tight transition-colors duration-300">
           Kanban Board
         </h1>
-        <p className="text-zinc-400 mt-2 text-lg">Drag and drop orders across columns to update their status.</p>
+        <p className="text-gray-500 dark:text-zinc-400 mt-2 text-lg transition-colors duration-300">Drag and drop orders across columns to update their status.</p>
       </div>
 
       <div className="flex-1 overflow-x-auto overflow-y-hidden pb-6 custom-scrollbar">

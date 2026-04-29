@@ -13,10 +13,10 @@ const Dashboard = () => {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none -z-10" />
 
       <div className="mb-10">
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 tracking-tight">
+        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-400 tracking-tight">
           Dashboard Overview
         </h1>
-        <p className="text-zinc-400 mt-2 text-lg">Monitor your laundry business at a glance.</p>
+        <p className="text-zinc-600 dark:text-zinc-400 mt-2 text-lg">Monitor your laundry business at a glance.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -42,7 +42,7 @@ const Dashboard = () => {
 
       <div>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white tracking-tight">Recent Orders</h2>
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Recent Orders</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {recentOrders.map(order => (

@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
+  theme: 'dark',
+  toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),
   totalRevenue: 12500,
   activeOrders: 14,
   orders: [
