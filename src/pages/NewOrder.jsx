@@ -33,42 +33,46 @@ const NewOrder = () => {
       const items = [];
       let total = 0;
       
-      const pricing = {
-        shirt: { name: 'Shirt', price: 20 },
-        shirts: { name: 'Shirt', price: 20 },
-        jeans: { name: 'Jeans', price: 30 },
-        jean: { name: 'Jeans', price: 30 },
-        jacket: { name: 'Jacket', price: 50 },
-        jackets: { name: 'Jacket', price: 50 }
-      };
-
       const segments = input.toLowerCase().split(',');
       
       segments.forEach(segment => {
-        const parts = segment.trim().split(/\s+/);
-        let quantity = 1;
-        let matchedItem = null;
+        const cleanSegment = segment.trim();
+        if (!cleanSegment) return;
 
-        for (const part of parts) {
-          const num = parseInt(part, 10);
-          if (!isNaN(num)) {
-            quantity = num;
-          } else {
-            const cleanPart = part.replace(/[^\w]/g, '');
-            if (pricing[cleanPart]) {
-              matchedItem = pricing[cleanPart];
-            }
-          }
+        // Match optional leading numbers and the rest of the string
+        const match = cleanSegment.match(/^(\d+)?\s*(.+)$/);
+        if (!match) return;
+
+        const quantity = match[1] ? parseInt(match[1], 10) : 1;
+        const rawName = match[2].trim();
+        
+        let price = 25; // Default generic price for unknown clothes
+        // Capitalize each word for custom items so it always looks clean
+        let finalName = rawName.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+        // Apply specific pricing logic for common categories, but KEEP the user's custom name
+        if (rawName.includes('shirt') || rawName.includes('top') || rawName.includes('blouse') || rawName.includes('tshirt')) {
+          price = 20;
+        } else if (rawName.includes('jean') || rawName.includes('pant') || rawName.includes('trouser')) {
+          price = 30;
+        } else if (rawName.includes('jacket') || rawName.includes('coat') || rawName.includes('hoodie') || rawName.includes('sweater')) {
+          price = 50;
+        } else if (rawName.includes('bed') || rawName.includes('sheet') || rawName.includes('blanket') || rawName.includes('duvet') || rawName.includes('pillow')) {
+          price = 60;
+        } else if (rawName.includes('suit') || rawName.includes('blazer')) {
+          price = 100;
+        } else if (rawName.includes('dress') || rawName.includes('skirt')) {
+          price = 40;
+        } else if (rawName.includes('towel')) {
+          price = 15;
         }
 
-        if (matchedItem) {
-          items.push({ 
-            name: matchedItem.name, 
-            quantity, 
-            price: matchedItem.price
-          });
-          total += (quantity * matchedItem.price);
-        }
+        items.push({ 
+          name: finalName, 
+          quantity, 
+          price
+        });
+        total += (quantity * price);
       });
       
       setIsProcessing(false);
@@ -90,7 +94,7 @@ const NewOrder = () => {
       customer,
       items: parsedResult.items,
       total: parsedResult.total,
-      status: 'Pending',
+      status: 'Received',
       date: new Date().toISOString()
     };
     

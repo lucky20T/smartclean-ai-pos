@@ -25,7 +25,7 @@ const useStore = create((set) => ({
       customer: 'Charlie Brown',
       items: [{ name: 'Suit', quantity: 1 }],
       total: 25,
-      status: 'Pending',
+      status: 'Received',
       date: new Date().toISOString()
     }
   ],
