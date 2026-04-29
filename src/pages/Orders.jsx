@@ -84,7 +84,7 @@ const Orders = () => {
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex gap-6 h-full items-stretch min-w-max px-1">
+          <div className="flex gap-3 md:gap-4 lg:gap-6 h-full items-stretch w-full px-1">
             {COLUMNS.map(status => (
               <KanbanColumn 
                 key={status}
