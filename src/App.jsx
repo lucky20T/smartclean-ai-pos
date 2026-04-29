@@ -6,6 +6,7 @@ import TopBar from './components/TopBar';
 import Dashboard from './pages/Dashboard';
 import NewOrder from './pages/NewOrder';
 import Orders from './pages/Orders';
+import Settings from './pages/Settings';
 
 function App() {
   const theme = useStore((state) => state.theme);
@@ -31,6 +32,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/new-order" element={<NewOrder />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </main>
         </div>
